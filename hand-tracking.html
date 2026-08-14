@@ -1,0 +1,441 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paper Study — Hand-Controlled Portfolio</title>
+  <meta name="description" content="A hand-controlled portfolio hero. Open hand keeps the papercraft portrait flat; close your fist to crumple it." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --c-bg:     #080808;
+      --c-accent: #c8a96e;
+      --c-text:   #f0ece4;
+      --c-muted:  rgba(240,236,228,0.42);
+      --c-dim:    rgba(240,236,228,0.18);
+      --sans:     'Inter', sans-serif;
+      --serif:    'Cormorant Garamond', serif;
+    }
+    html, body { height: 100%; overflow: hidden; }
+    body { background: var(--c-bg); color: var(--c-text); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+
+    /* GRAIN */
+    #grain {
+      position: fixed; inset: -200%; width: 400%; height: 400%;
+      pointer-events: none; z-index: 9000; opacity: 0.038;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grain-drift 8s steps(2) infinite;
+    }
+    @keyframes grain-drift {
+      0%,100%{transform:translate(0,0)} 10%{transform:translate(-3%,-3%)} 20%{transform:translate(2%,-5%)}
+      30%{transform:translate(-5%,2%)} 40%{transform:translate(2%,5%)} 50%{transform:translate(-3%,3%)}
+      60%{transform:translate(4%,-2%)} 70%{transform:translate(-4%,4%)} 80%{transform:translate(3%,-4%)} 90%{transform:translate(-2%,2%)}
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 800;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 40px; border-bottom: 1px solid rgba(255,255,255,0.05);
+      animation: rise-in 0.7s cubic-bezier(0.22,1,0.36,1) 0.05s both;
+    }
+    .nav-wordmark { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; letter-spacing: 0.02em; color: var(--c-text); text-decoration: none; }
+    .nav-wordmark sup { font-size: 0.45em; vertical-align: super; color: var(--c-accent); }
+    .nav-links { display: flex; gap: 36px; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-links a { font-size: 0.78rem; font-weight: 400; letter-spacing: 0.08em; color: var(--c-muted); text-decoration: none; text-transform: uppercase; transition: color 0.25s; }
+    .nav-links a:hover { color: var(--c-text); }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .btn-ghost { padding: 8px 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.22); background: transparent; color: var(--c-text); font-family: var(--sans); font-size: 0.78rem; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; transition: border-color 0.25s, background 0.25s; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.05); }
+    .btn-solid { padding: 8px 22px; border-radius: 999px; background: var(--c-text); color: #080808; font-family: var(--sans); font-size: 0.78rem; font-weight: 600; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; transition: background 0.25s, transform 0.2s; }
+    .btn-solid:hover { background: #fff; transform: translateY(-1px); }
+
+    /* REEL — canvas crumple */
+    #reel-wrap {
+      position: fixed; top: 38px; bottom: 12px;
+      right: clamp(80px,13vw,280px); width: min(50vw,720px);
+      z-index: 100; display: flex; align-items: center; justify-content: center;
+      animation: rise-in 1.1s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+    }
+    #crumple-canvas {
+      width: 100%; height: 100%; display: block;
+      -webkit-mask-image: radial-gradient(ellipse 60% 58% at 50% 50%, black 0%, black 48%, transparent 82%);
+      mask-image: radial-gradient(ellipse 60% 58% at 50% 50%, black 0%, black 48%, transparent 82%);
+    }
+    #reel-status {
+      position: absolute; top: 14px; left: 14px; display: flex; align-items: center; gap: 6px;
+      background: rgba(8,8,8,0.72); border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px); border-radius: 999px; padding: 5px 12px;
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em; color: var(--c-text); z-index: 2;
+    }
+    #reel-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; transition: background 0.4s; flex-shrink: 0; }
+    #reel-status-dot.crumpling { background: var(--c-accent); }
+    #reel-status-dot.full { background: #f87171; }
+
+    /* MAIN TEXT */
+    main { position: fixed; inset: 0; display: flex; flex-direction: column; padding: 0 40px 36px; pointer-events: none; }
+    .tagline-row { margin-top: 100px; display: flex; align-items: center; gap: 10px; animation: rise-in 0.8s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
+    .tagline-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent); flex-shrink: 0; }
+    .tagline-text { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-muted); }
+    .tagline-text em { font-style: italic; font-family: var(--serif); }
+    .headline { margin-top: 28px; font-family: var(--sans); font-size: clamp(44px,6.6vw,96px); font-weight: 300; line-height: 1.06; letter-spacing: -0.03em; max-width: 58vw; color: var(--c-text); animation: rise-in 0.9s cubic-bezier(0.22,1,0.36,1) 0.28s both; }
+    .headline .italic-block { font-family: var(--serif); font-style: italic; font-weight: 300; display: block; }
+    .spacer { flex: 1; }
+    .bio-block { max-width: 340px; pointer-events: all; animation: rise-in 0.9s cubic-bezier(0.22,1,0.36,1) 0.44s both; }
+    .bio-text { font-size: 0.8rem; line-height: 1.7; color: var(--c-muted); margin-bottom: 18px; }
+    .bio-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: var(--c-text); color: #080808; font-family: var(--sans); font-size: 0.78rem; font-weight: 600; text-decoration: none; transition: background 0.25s, transform 0.2s; }
+    .bio-link:hover { background: #fff; transform: translateY(-1px); }
+    .bio-link svg { width: 14px; height: 14px; }
+    .bottom-footer { position: fixed; bottom: 28px; left: 0; right: 0; padding: 0 40px; display: flex; justify-content: space-between; pointer-events: none; }
+    .footer-copy { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-dim); }
+
+    /* POLAROID */
+    #polaroid {
+      position: fixed; bottom: 28px; right: 32px; width: 240px; z-index: 600;
+      cursor: grab; user-select: none; touch-action: none;
+      background: #f5f0e8; border-radius: 3px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25), 0 12px 40px rgba(0,0,0,0.55);
+      transform: rotate(-2.4deg);
+      animation: rise-in 0.9s cubic-bezier(0.22,1,0.36,1) 0.6s both;
+    }
+    #polaroid:active { cursor: grabbing; }
+    #polaroid::before { content: ''; position: absolute; top: -8px; left: 20%; right: 20%; height: 20px; background: rgba(255,255,255,0.55); border-radius: 2px; z-index: 2; }
+    .polaroid-photo-wrap { margin: 14px 14px 0; aspect-ratio: 3/3.4; background: #1a1a1a; border-radius: 1px; overflow: hidden; position: relative; }
+    #cam-canvas { width: 100%; height: 100%; display: block; }
+    #cam-status-pill { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.72); border: 1px solid rgba(255,255,255,0.14); backdrop-filter: blur(6px); border-radius: 999px; padding: 3px 10px; font-size: 0.6rem; font-weight: 500; color: #fff; white-space: nowrap; z-index: 3; }
+    .polaroid-caption { padding: 10px 14px 14px; font-family: 'Courier New', monospace; font-size: 0.62rem; color: #5c4a2a; text-align: center; letter-spacing: 0.04em; }
+    .polaroid-resize-grip { position: absolute; bottom: 6px; right: 6px; width: 16px; height: 16px; cursor: nwse-resize; opacity: 0.4; }
+    .polaroid-resize-grip svg { width: 100%; height: 100%; }
+
+    /* ANIMATIONS */
+    @keyframes rise-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* RESPONSIVE */
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      #reel-wrap { top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; opacity: 0.2; z-index: 0; }
+      main { z-index: 10; }
+      .headline { max-width: 90vw; }
+      #polaroid { width: 160px; bottom: 16px; right: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      nav, .tagline-row, .headline, .bio-block, #reel-wrap, #polaroid { animation: none; opacity: 1; transform: none; }
+      #grain { animation: none; }
+    }
+  </style>
+</head>
+<body>
+<div id="grain" aria-hidden="true"></div>
+
+<nav>
+  <a href="#" class="nav-wordmark">Paper Study<sup>✦</sup></a>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li><li><a href="#">Work</a></li><li><a href="#">About</a></li><li><a href="#">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="#" class="btn-ghost">See My Work</a>
+    <a href="#" class="btn-solid">Say Hello</a>
+  </div>
+</nav>
+
+<div id="reel-wrap">
+  <canvas id="crumple-canvas"></canvas>
+  <div id="reel-status">
+    <span id="reel-status-dot"></span>
+    <span id="reel-status-text">Flat</span>
+  </div>
+</div>
+
+<main>
+  <div class="tagline-row">
+    <div class="tagline-dot"></div>
+    <p class="tagline-text">Paper, Pixels &amp; <em>Systems</em></p>
+  </div>
+  <h1 class="headline">
+    A flat sheet holds<br>every shape<br>
+    <span class="italic-block">it will ever become.</span>
+  </h1>
+  <div class="spacer"></div>
+  <div class="bio-block">
+    <p class="bio-text">A creator building content systems, digital products and playful internet experiments. Everything begins the same way: a flat sheet, a first fold, and the patience to see what it becomes.</p>
+    <a href="#" class="bio-link">View My Work <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 3l5 4-5 4"/></svg></a>
+  </div>
+</main>
+
+<div class="bottom-footer">
+  <span class="footer-copy">Paper Study &copy; 2026</span>
+  <span class="footer-copy">Hand Controlled</span>
+</div>
+
+<div id="polaroid">
+  <div class="polaroid-photo-wrap">
+    <canvas id="cam-canvas"></canvas>
+    <div id="cam-status-pill">Starting camera&hellip;</div>
+  </div>
+  <div class="polaroid-caption">&#9997; open-hand flat &bull; &#9994; fist scrunch</div>
+  <div class="polaroid-resize-grip" id="resize-grip">
+    <svg viewBox="0 0 16 16" fill="none" stroke="#5c4a2a" stroke-width="1.8" stroke-linecap="round">
+      <line x1="4" y1="12" x2="12" y2="4"/><line x1="8" y1="12" x2="12" y2="8"/>
+    </svg>
+  </div>
+</div>
+
+<script type="module">
+/* ═══ CRUMPLE CANVAS ENGINE ═══════════════════════════════════════ */
+const canvas = document.getElementById('crumple-canvas');
+const ctx    = canvas.getContext('2d');
+const statusDot  = document.getElementById('reel-status-dot');
+const statusText = document.getElementById('reel-status-text');
+
+let scrunchTarget = 0;
+let scrunchShown  = 0;
+const COLS = 14, ROWS = 18;
+
+// Load portrait image
+const img = new Image();
+img.src = 'portrait_paper.png';
+img.onload = () => { imgReady = true; };
+let imgReady = false;
+
+// Seed random offsets per vertex for organic crumple
+const seed = [];
+for (let i = 0; i < (COLS+1)*(ROWS+1); i++) {
+  seed.push({ x: (Math.random()-0.5)*2, y: (Math.random()-0.5)*2, z: Math.random() });
+}
+
+function resizeCanvas() {
+  const wrap = document.getElementById('reel-wrap');
+  canvas.width  = wrap.offsetWidth;
+  canvas.height = wrap.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+function drawCrumple(s) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (!imgReady) return;
+
+  const W = canvas.width, H = canvas.height;
+  // Image display area — centered, portrait aspect
+  const aspect = img.naturalWidth / img.naturalHeight;
+  let iw = W * 0.82, ih = iw / aspect;
+  if (ih > H * 0.88) { ih = H * 0.88; iw = ih * aspect; }
+  const ox = (W - iw) / 2, oy = (H - ih) / 2;
+
+  const cx = W / 2, cy = H / 2; // crumple center
+
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      // Four corners of this cell
+      const corners = [
+        [col,   row  ],
+        [col+1, row  ],
+        [col+1, row+1],
+        [col,   row+1],
+      ];
+
+      // Map to image space and screen space
+      const pts = corners.map(([c, r]) => {
+        const fu = c / COLS, fv = r / ROWS;
+        // Flat position
+        const flatX = ox + fu * iw;
+        const flatY = oy + fv * ih;
+        // Crumple: pull toward center + random displacement
+        const si = r * (COLS+1) + c;
+        const sd = seed[si];
+        const pullX = (cx - flatX) * s * (0.6 + sd.z * 0.4);
+        const pullY = (cy - flatY) * s * (0.6 + sd.z * 0.4);
+        const jitterAmp = s * Math.pow(s, 0.5) * iw * 0.08;
+        const jx = sd.x * jitterAmp * (1 - Math.abs(fu - 0.5)*2);
+        const jy = sd.y * jitterAmp * (1 - Math.abs(fv - 0.5)*2);
+        return {
+          sx: flatX + pullX + jx,
+          sy: flatY + pullY + jy,
+          u: fu, v: fv
+        };
+      });
+
+      // Draw two triangles per cell using drawImage with transform
+      drawTriangle(ctx, img, pts[0], pts[1], pts[2], s);
+      drawTriangle(ctx, img, pts[0], pts[2], pts[3], s);
+    }
+  }
+
+  // Dark overlay as it crumples
+  if (s > 0.05) {
+    const ball = s * Math.min(W, H) * 0.38;
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, ball * 1.5);
+    grad.addColorStop(0, `rgba(8,8,8,0)`);
+    grad.addColorStop(0.6, `rgba(8,8,8,${s * 0.35})`);
+    grad.addColorStop(1, `rgba(8,8,8,${Math.min(0.92, s * 1.1)})`);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Crumpled ball shape appears
+    if (s > 0.55) {
+      const alpha = (s - 0.55) / 0.45;
+      ctx.save();
+      ctx.globalAlpha = alpha * 0.9;
+      const ballR = ball * alpha * 0.65;
+      // Ball shadow
+      const shadowGrad = ctx.createRadialGradient(cx+ballR*0.15, cy+ballR*0.15, 0, cx, cy, ballR*1.1);
+      shadowGrad.addColorStop(0, 'rgba(40,28,12,1)');
+      shadowGrad.addColorStop(0.5, 'rgba(28,18,6,1)');
+      shadowGrad.addColorStop(1, 'rgba(8,8,8,0)');
+      ctx.fillStyle = shadowGrad;
+      ctx.beginPath(); ctx.arc(cx, cy, ballR*1.15, 0, Math.PI*2); ctx.fill();
+      // Ball highlight
+      const hlGrad = ctx.createRadialGradient(cx-ballR*0.28, cy-ballR*0.28, 0, cx, cy, ballR);
+      hlGrad.addColorStop(0, 'rgba(210,180,130,0.55)');
+      hlGrad.addColorStop(0.35, 'rgba(150,120,80,0.3)');
+      hlGrad.addColorStop(1, 'rgba(30,20,10,0.95)');
+      ctx.fillStyle = hlGrad;
+      ctx.beginPath(); ctx.arc(cx, cy, ballR, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+  }
+}
+
+// Draw a textured triangle using canvas 2D transform trick
+function drawTriangle(ctx, img, p0, p1, p2, scrunch) {
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  const x0=p0.sx,y0=p0.sy, x1=p1.sx,y1=p1.sy, x2=p2.sx,y2=p2.sy;
+  const u0=p0.u*iw,v0=p0.v*ih, u1=p1.u*iw,v1=p1.v*ih, u2=p2.u*iw,v2=p2.v*ih;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.lineTo(x2,y2);
+  ctx.closePath();
+  ctx.clip();
+
+  const denom = (u1-u0)*(v2-v0) - (u2-u0)*(v1-v0);
+  if (Math.abs(denom) < 0.001) { ctx.restore(); return; }
+  const a = ((x1-x0)*(v2-v0) - (x2-x0)*(v1-v0)) / denom;
+  const b = ((x2-x0)*(u1-u0) - (x1-x0)*(u2-u0)) / denom;
+  const c = x0 - a*u0 - b*v0;
+  const d = ((y1-y0)*(v2-v0) - (y2-y0)*(v1-v0)) / denom;
+  const e = ((y2-y0)*(u1-u0) - (y1-y0)*(u2-u0)) / denom;
+  const f = y0 - d*u0 - e*v0;
+
+  ctx.transform(a,d,b,e,c,f);
+  ctx.drawImage(img, 0, 0);
+
+  // Per-facet crease shadow
+  if (scrunch > 0.02) {
+    ctx.resetTransform ? ctx.resetTransform() : ctx.setTransform(1,0,0,1,0,0);
+    ctx.beginPath();
+    ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.lineTo(x2,y2); ctx.closePath();
+    ctx.fillStyle = `rgba(0,0,0,${scrunch * 0.22})`;
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Crease line
+  if (scrunch > 0.04) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(0,0,0,${scrunch * 0.35})`;
+    ctx.lineWidth = 0.6;
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.lineTo(x2,y2); ctx.closePath(); ctx.stroke();
+    ctx.restore();
+  }
+}
+
+function updateStatus(v) {
+  if (v < 0.03) { statusDot.className=''; statusText.textContent='Flat'; }
+  else { statusText.textContent=Math.round(v*100)+'% scrunched'; statusDot.className=v>0.75?'full':'crumpling'; }
+}
+
+window.__scrunch = v => { scrunchTarget = Math.max(0, Math.min(1, +v)); };
+
+(function raf() {
+  scrunchShown += (scrunchTarget - scrunchShown) * 0.15;
+  drawCrumple(scrunchShown);
+  updateStatus(scrunchShown);
+  requestAnimationFrame(raf);
+})();
+
+/* ═══ MEDIAPIPE HAND TRACKING ═══════════════════════════════════ */
+const camCanvas  = document.getElementById('cam-canvas');
+const camCtx     = camCanvas.getContext('2d');
+const statusPill = document.getElementById('cam-status-pill');
+
+const WASM_BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm';
+const TASK_URL  = 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
+const CONNECTIONS = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+
+let handLandmarker=null, camVideo=null, lastVT=-1, noHandFrames=0;
+
+async function initHands() {
+  try {
+    statusPill.textContent='Loading AI\u2026';
+    const {FilesetResolver,HandLandmarker} = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs');
+    const vision = await FilesetResolver.forVisionTasks(WASM_BASE);
+    const mkHL = async(delegate) => HandLandmarker.createFromOptions(vision,{baseOptions:{modelAssetPath:TASK_URL,delegate},runningMode:'VIDEO',numHands:1});
+    try { handLandmarker=await mkHL('GPU'); } catch { handLandmarker=await mkHL('CPU'); }
+    statusPill.textContent='Requesting camera\u2026';
+    const stream = await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});
+    camVideo=document.createElement('video'); camVideo.srcObject=stream; camVideo.muted=true; camVideo.playsInline=true;
+    await camVideo.play();
+    camCanvas.width=camVideo.videoWidth||640; camCanvas.height=camVideo.videoHeight||480;
+    statusPill.textContent='Show your hand \u270b';
+    detect();
+  } catch(e) {
+    console.warn('Hand tracking failed:',e);
+    statusPill.textContent='Camera offline \u2014 use console: __scrunch(0..1)';
+    camCtx.fillStyle='#1a1a1a'; camCtx.fillRect(0,0,camCanvas.width||320,camCanvas.height||380);
+    camCtx.fillStyle='rgba(200,169,110,0.5)'; camCtx.font='12px Inter,sans-serif'; camCtx.textAlign='center';
+    camCtx.fillText('No camera access',160,185); camCtx.fillText('Try: __scrunch(0.8)',160,205);
+  }
+}
+
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+function openness(lm){const ps=dist(lm[0],lm[9]);if(ps<1e-6)return 1;const avg=[lm[8],lm[12],lm[16],lm[20]].reduce((s,t)=>s+dist(t,lm[0]),0)/4;return Math.max(0,Math.min(1,(avg/ps-1.05)/(1.85-1.05)));}
+
+function detect(){
+  if(!camVideo||!handLandmarker){return;}
+  requestAnimationFrame(detect);
+  if(camVideo.currentTime===lastVT)return; lastVT=camVideo.currentTime;
+  camCtx.save(); camCtx.translate(camCanvas.width,0); camCtx.scale(-1,1);
+  camCtx.drawImage(camVideo,0,0,camCanvas.width,camCanvas.height); camCtx.restore();
+  const res=handLandmarker.detectForVideo(camVideo,performance.now());
+  if(res.landmarks&&res.landmarks.length>0){
+    noHandFrames=0;
+    const lm=res.landmarks[0];
+    const W=camCanvas.width,H=camCanvas.height;
+    const tx=p=>(1-p.x)*W, ty=p=>p.y*H;
+    camCtx.shadowBlur=8; camCtx.shadowColor='rgba(255,255,255,0.7)';
+    camCtx.strokeStyle='rgba(255,255,255,0.75)'; camCtx.lineWidth=1.5;
+    for(const[a,b]of CONNECTIONS){camCtx.beginPath();camCtx.moveTo(tx(lm[a]),ty(lm[a]));camCtx.lineTo(tx(lm[b]),ty(lm[b]));camCtx.stroke();}
+    camCtx.shadowBlur=0;
+    for(let i=0;i<lm.length;i++){camCtx.beginPath();camCtx.arc(tx(lm[i]),ty(lm[i]),i===0?5:3,0,Math.PI*2);camCtx.fillStyle=i===0?'rgba(200,169,110,0.95)':'rgba(255,255,255,0.85)';camCtx.fill();}
+    const op=openness(lm);
+    scrunchTarget=1-op;
+    const pct=Math.round(op*100);
+    statusPill.textContent=op>0.7?'\u270b Open ('+pct+'%)':op<0.3?'\u270a Fist ('+pct+'%)':'\ud83d\udd90 '+pct+'%';
+  } else {
+    noHandFrames++;
+    if(noHandFrames>20){scrunchTarget=Math.max(0,scrunchTarget-0.007);statusPill.textContent='No hand \u2014 relaxing\u2026';}
+  }
+}
+
+if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches) initHands();
+else statusPill.textContent='Reduced motion mode';
+
+/* ═══ POLAROID DRAG & RESIZE ════════════════════════════════════ */
+const polaroid=document.getElementById('polaroid'), grip=document.getElementById('resize-grip');
+let dragging=false,resizing=false,dx=0,dy=0,pl=0,pt=0,anchored=false,rx=0,rw=0;
+polaroid.addEventListener('pointerdown',e=>{if(grip.contains(e.target))return;dragging=true;const r=polaroid.getBoundingClientRect();pl=r.left;pt=r.top;dx=e.clientX-pl;dy=e.clientY-pt;if(!anchored){anchored=true;polaroid.style.right='auto';polaroid.style.bottom='auto';polaroid.style.left=pl+'px';polaroid.style.top=pt+'px';}e.preventDefault();});
+grip.addEventListener('pointerdown',e=>{resizing=true;rx=e.clientX;rw=polaroid.offsetWidth;e.stopPropagation();e.preventDefault();});
+window.addEventListener('pointermove',e=>{
+  if(dragging){let nx=Math.max(0,Math.min(window.innerWidth-polaroid.offsetWidth,e.clientX-dx));let ny=Math.max(0,Math.min(window.innerHeight-polaroid.offsetHeight,e.clientY-dy));polaroid.style.left=nx+'px';polaroid.style.top=ny+'px';}
+  if(resizing){polaroid.style.width=Math.max(120,Math.min(520,rw+e.clientX-rx))+'px';}
+});
+window.addEventListener('pointerup',()=>{dragging=false;resizing=false;});
+</script>
+</body>
+</html>
