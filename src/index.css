@@ -1,40 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Great+Vibes&display=swap');
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400;500&display=swap');
 
+@custom-variant dark (&:where(.dark, .dark *));
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
-  --font-serif: "Cormorant Garamond", serif;
-  --font-cursive: "Alex Brush", cursive;
+  --font-heading: "Outfit", system-ui, sans-serif;
+  --font-signature: "Great Vibes", cursive;
   
-  --color-bg-primary: #f8f8f8;
-  --color-text-primary: #111111;
-  --color-border-grid: rgba(0, 0, 0, 0.1);
+  --color-primary: #9333EA; /* Bright purple */
+  --color-primary-dark: #7C3AED;
+  --color-accent: #C026D3; /* Pink/Purple highlight */
+  
+  --color-bg-main: #FAFAFA;
+  --color-bg-card: #FFFFFF;
+  
+  --color-text-main: #111827; /* Dark slate */
+  --color-text-muted: #6B7280;
 }
 
 @layer base {
   :root {
-    --background: #f8f8f8;
-    --foreground: #111111;
+    --background: #FAFAFA;
+    --foreground: #111827;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
-    background-image: 
-      linear-gradient(to right, var(--color-border-grid) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--color-border-grid) 1px, transparent 1px);
-    background-size: 50vw 50vh;
-    background-position: center;
+    /* Very subtle geometric/dot grid background */
+    background-image: radial-gradient(rgba(147, 51, 234, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
     overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 }
 
 @layer utilities {
-  .grid-border-left {
-    border-left: 1px dashed var(--color-border-grid);
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
   }
-  .grid-border-bottom {
-    border-bottom: 1px dashed var(--color-border-grid);
+  
+  .glass-nav {
+    background: rgba(250, 250, 250, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+  }
+
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(45deg, var(--color-primary), var(--color-accent), var(--color-primary-dark));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .glow-border:hover::before {
+    opacity: 0.5;
+  }
+  
+  .purple-shadow {
+    box-shadow: 0 10px 40px -10px rgba(147, 51, 234, 0.2);
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); } /* Translate by half since we duplicate content */
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-marquee-reverse {
+    animation: marquee 30s linear infinite reverse;
+  }
+
+  .pause-animation {
+    animation-play-state: paused;
+  }
+
+  .fade-edges {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
 }

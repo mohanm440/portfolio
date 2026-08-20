@@ -1,168 +1,97 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { personalInfo } from '../data/portfolioData';
-import { Mail, Phone, MessageSquare, FileText, Send } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from './Icons';
+import { FiSend } from 'react-icons/fi';
 
-export default function Contact() {
+const Contact = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Fallback to mailto link since there's no backend
+    const mailtoLink = `mailto:${personalInfo.email}?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+    window.location.href = mailtoLink;
+    setIsSubmitting(false);
+  };
+
   return (
-    <section id="contact" className="relative py-28 px-6 md:px-12 max-w-6xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="mb-16 text-center"
-      >
-        <span className="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2 block">
-          Get In Touch
-        </span>
-        <h2 className="font-serif-custom text-4xl md:text-5xl font-light text-white mb-4">
-          Let's Work <em className="italic font-normal">Together</em>
-        </h2>
-        <p className="text-slate-400 text-base max-w-xl mx-auto">
-          Currently open to full-time AI/ML Engineering, Data Science, and Cybersecurity roles. Feel free to reach out directly via WhatsApp, LinkedIn, or Email.
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        {/* Left: Contact Channels */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="space-y-4"
-        >
-          {/* WhatsApp Direct Link */}
-          <a
-            href={personalInfo.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-green-500/40 hover:bg-green-500/5 transition-all group backdrop-blur-md"
-          >
-            <div className="w-12 h-12 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">
-              <MessageSquare className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs uppercase tracking-wider text-slate-400 block mb-0.5">
-                WhatsApp Direct
-              </span>
-              <span className="text-sm font-semibold text-white group-hover:text-green-300 transition-colors">
-                {personalInfo.whatsapp}
-              </span>
-            </div>
-          </a>
-
-          {/* Email Direct Link */}
-          <a
-            href={`mailto:${personalInfo.email}`}
-            className="flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-500/40 hover:bg-purple-500/5 transition-all group backdrop-blur-md"
-          >
-            <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
-              <Mail className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs uppercase tracking-wider text-slate-400 block mb-0.5">
-                Email Address
-              </span>
-              <span className="text-sm font-semibold text-white group-hover:text-purple-300 transition-colors">
-                {personalInfo.email}
-              </span>
-            </div>
-          </a>
-
-          {/* LinkedIn Profile */}
-          <a
-            href={personalInfo.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/40 hover:bg-blue-500/5 transition-all group backdrop-blur-md"
-          >
-            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-              <LinkedinIcon className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs uppercase tracking-wider text-slate-400 block mb-0.5">
-                LinkedIn Profile
-              </span>
-              <span className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors">
-                linkedin.com/in/mohansakthi
-              </span>
-            </div>
-          </a>
-
-          {/* GitHub Profile */}
-          <a
-            href={personalInfo.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-violet-500/40 hover:bg-violet-500/5 transition-all group backdrop-blur-md"
-          >
-            <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
-              <GithubIcon className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs uppercase tracking-wider text-slate-400 block mb-0.5">
-                GitHub Repositories
-              </span>
-              <span className="text-sm font-semibold text-white group-hover:text-violet-300 transition-colors">
-                github.com/mohanm440
-              </span>
-            </div>
-          </a>
-        </motion.div>
-
-        {/* Right: Contact Form */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md"
-        >
-          <h3 className="font-serif-custom text-2xl font-semibold text-white mb-6">
-            Send a Direct Message
-          </h3>
-
-          <form onSubmit={(e) => { e.preventDefault(); alert("Thank you! Your message has been prepared."); window.location.href = `mailto:${personalInfo.email}`; }} className="space-y-5">
-            <div>
-              <label className="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-2">Your Name</label>
-              <input
-                type="text"
-                required
-                placeholder="John Doe"
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500 transition-colors"
-              />
-            </div>
-            <div>
-              <label className="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-2">Your Email</label>
-              <input
-                type="email"
-                required
-                placeholder="john@example.com"
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500 transition-colors"
-              />
-            </div>
-            <div>
-              <label className="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-2">Message</label>
-              <textarea
-                rows={4}
-                required
-                placeholder="Hello Mohan, I'd like to discuss an ML opportunity..."
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500 transition-colors resize-none"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold text-sm tracking-wider uppercase shadow-xl shadow-purple-500/25 hover:shadow-purple-500/40 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+    <section id="contact" className="py-24 bg-gray-50 dark:bg-[#121212] relative overflow-hidden transition-colors duration-500">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          
+          {/* Left Column: Emoji */}
+          <div className="lg:col-span-5 flex justify-center items-center">
+            <motion.div 
+              animate={{ 
+                rotate: [0, 20, -10, 20, -10, 10, 0, 0, 0, 0],
+                scale: [1, 1.1, 1, 1.1, 1, 1, 1, 1, 1, 1],
+                y: [0, -15, 0, -15, 0, 0, 0, 0, 0, 0]
+              }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 3,
+                ease: "easeInOut"
+              }}
+              className="text-[12rem] md:text-[15rem] leading-none select-none drop-shadow-2xl origin-bottom-right"
             >
-              <Send className="w-4 h-4" />
-              <span>Send Message</span>
-            </button>
-          </form>
-        </motion.div>
+              👋
+            </motion.div>
+          </div>
+
+          {/* Right Column: Form */}
+          <div className="lg:col-span-7 lg:pl-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-sm font-bold tracking-widest text-purple-600 dark:text-purple-400 uppercase mb-4 transition-colors">
+                LET'S CONNECT
+              </p>
+              <h2 className="text-4xl md:text-5xl font-bold font-heading text-gray-900 dark:text-white mb-6 uppercase leading-tight transition-colors">
+                Let's work together
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-10 transition-colors">
+                I'm currently looking for new opportunities. Whether you have a question, a project in mind, or just want to say hi, I'll try my best to get back to you!
+              </p>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2 transition-colors">Your Name</label>
+                    <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#18181b] border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all shadow-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500" placeholder="John Doe" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2 transition-colors">Your Email</label>
+                    <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#18181b] border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all shadow-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500" placeholder="john@example.com" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2 transition-colors">Subject</label>
+                  <input type="text" name="subject" required value={formData.subject} onChange={handleChange} className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#18181b] border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all shadow-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500" placeholder="Job Opportunity" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2 transition-colors">Message</label>
+                  <textarea name="message" required rows="5" value={formData.message} onChange={handleChange} className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#18181b] border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all shadow-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none" placeholder="Hello Mohan..."></textarea>
+                </div>
+                
+                <div className="flex justify-start mt-8">
+                  <button type="submit" disabled={isSubmitting} className="w-full md:w-auto px-10 py-4 bg-purple-600 text-white rounded-full font-bold flex items-center justify-center hover:bg-purple-700 transition-all shadow-md purple-shadow hover:-translate-y-1">
+                    Send Message <FiSend className="ml-3" />
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+
+        </div>
       </div>
     </section>
   );
-}
+};
+
+export default Contact;

@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { experience } from '../data/experience';
+import { education } from '../data/education';
+import { FiBookOpen } from 'react-icons/fi';
 
-const Experience = () => {
+const Education = () => {
   return (
-    <section id="experience" className="py-24 bg-white dark:bg-transparent relative transition-colors duration-500">
+    <section id="education" className="py-24 bg-gray-50 dark:bg-[#18181b] relative transition-colors duration-500">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
           
@@ -16,10 +17,10 @@ const Experience = () => {
               viewport={{ once: true }}
             >
               <p className="text-sm font-bold tracking-widest text-purple-600 dark:text-purple-400 uppercase mb-4 transition-colors">
-                EXPERIENCE
+                EDUCATION
               </p>
               <h2 className="text-4xl md:text-5xl font-bold font-heading text-gray-900 dark:text-white mb-6 uppercase leading-tight transition-colors">
-                Work Experience
+                Academic Background
               </h2>
             </motion.div>
           </div>
@@ -27,7 +28,7 @@ const Experience = () => {
           {/* Right Column: Timeline */}
           <div className="lg:col-span-8">
             <div className="space-y-12">
-              {experience.map((exp, idx) => (
+              {education.map((item, idx) => (
                 <motion.div 
                   key={idx}
                   initial={{ opacity: 0, y: 20 }}
@@ -44,25 +45,31 @@ const Experience = () => {
                     </div>
                     
                     {/* Content */}
-                    <div className="flex-1 bg-white dark:bg-[#18181b] p-8 rounded-[2rem] border border-gray-100 dark:border-white/10 shadow-sm group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-300 glow-border">
+                    <div className="flex-1 bg-white dark:bg-black/50 p-8 rounded-[2rem] border border-gray-100 dark:border-white/10 shadow-sm group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-300 glow-border">
                       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
                         <div>
-                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{exp.role}</h3>
-                          <h4 className="text-lg text-gray-500 dark:text-gray-400 font-medium transition-colors">{exp.company}</h4>
+                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{item.degree}</h3>
+                          <h4 className="text-lg text-gray-500 dark:text-gray-400 font-medium flex items-center mt-2 transition-colors">
+                            <FiBookOpen className="mr-2" /> {item.college}
+                          </h4>
                         </div>
                         <span className="inline-block px-4 py-1.5 mt-4 md:mt-0 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 rounded-full text-sm font-bold tracking-wider uppercase transition-colors">
-                          {exp.period}
+                          {item.period}
                         </span>
                       </div>
                       
-                      <ul className="list-none space-y-4">
-                        {exp.responsibilities.map((req, i) => (
-                          <li key={i} className="flex items-start text-gray-600 dark:text-gray-300 text-lg leading-relaxed transition-colors">
-                            <span className="text-purple-600 dark:text-purple-400 mr-4 mt-1.5 font-bold transition-colors">→</span>
-                            <span>{req}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      {item.description && (
+                        <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-4 transition-colors">
+                          {item.description}
+                        </p>
+                      )}
+                      
+                      {item.score && (
+                        <div className="inline-block px-4 py-2 bg-gray-50 dark:bg-[#18181b] border border-gray-200 dark:border-white/10 rounded-lg transition-colors">
+                          <span className="text-gray-900 dark:text-white font-bold transition-colors">Score: </span>
+                          <span className="text-purple-600 dark:text-purple-400 font-bold transition-colors">{item.score}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -76,4 +83,4 @@ const Experience = () => {
   );
 };
 
-export default Experience;
+export default Education;
