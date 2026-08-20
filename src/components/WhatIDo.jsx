@@ -29,7 +29,7 @@ const WhatIDo = () => {
                 What I can do for you
               </h2>
               <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed transition-colors">
-                As an AI & Machine Learning Engineer, I am passionate about building intelligent systems, uncovering insights from data, and crafting robust predictive models that solve real-world problems and drive innovation.
+                I build practical AI and machine learning solutions, from data preprocessing and model development to explainability, visualization, and deployment.
               </p>
             </motion.div>
           </div>
