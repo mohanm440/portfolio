@@ -4,7 +4,7 @@ export const education = [
     college: "Paavai Engineering College, Namakkal, Tamil Nadu",
     period: "Nov 2022 – May 2026",
     description: "Relevant Coursework: Network Security, Machine Learning, Data Structures & Algorithms",
-    score: null
+    score: "82%"
   },
   {
     degree: "Higher Secondary (Class XII)",
