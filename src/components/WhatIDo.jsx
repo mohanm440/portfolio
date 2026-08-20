@@ -23,10 +23,10 @@ const WhatIDo = () => {
               viewport={{ once: true }}
             >
               <p className="text-sm font-bold tracking-widest text-purple-600 dark:text-purple-400 uppercase mb-4 transition-colors">
-                WHAT I CAN DO FOR YOU
+                WHAT I WORK ON
               </p>
               <h2 className="text-4xl md:text-5xl font-bold font-heading text-gray-900 dark:text-white mb-6 uppercase leading-tight transition-colors">
-                What I can do for you
+                What I work on
               </h2>
               <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed transition-colors">
                 I build practical AI and machine learning solutions, from data preprocessing and model development to explainability, visualization, and deployment.
