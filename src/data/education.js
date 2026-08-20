@@ -3,7 +3,7 @@ export const education = [
     degree: "Bachelor of Engineering – Cyber Security",
     college: "Paavai Engineering College, Namakkal, Tamil Nadu",
     period: "Nov 2022 – May 2026",
-    description: "Relevant Coursework: Network Security, Machine Learning, Data Structures & Algorithms",
+    description: "Relevant Coursework: Network Security, Machine Learning, Deep Learning, Artificial Intelligence & AI Agents",
     score: "82%"
   },
   {
