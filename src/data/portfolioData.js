@@ -11,7 +11,7 @@ export const personalInfo = {
   email: "mohansakthimp@gmail.com",
   phone: "+91 6379376810",
   github: "https://github.com/mohanm440",
-  linkedin: "https://www.linkedin.com/in/mohan-m-009772276/",
+  linkedin: "https://www.linkedin.com/in/mohansakthi/",
   whatsapp: "https://wa.me/916379376810",
   resumeUrl: "/Mohan_Resume.pdf"
 };
