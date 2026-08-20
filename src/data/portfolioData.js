@@ -19,32 +19,32 @@ export const personalInfo = {
 export const whatIDo = [
   {
     title: "Machine Learning",
-    description: "Build predictive and classification models.",
+    description: "Build predictive models using Python, Scikit-learn, and XGBoost.",
     icon: "FaRobot"
   },
   {
-    title: "Data Analysis",
-    description: "Clean, transform, analyze, and visualize datasets.",
+    title: "Data Analytics",
+    description: "Clean, analyze, visualize, and extract insights from real-world datasets.",
     icon: "FaChartBar"
   },
   {
     title: "Deep Learning",
-    description: "Develop neural-network-based solutions.",
+    description: "Develop neural-network-based solutions using TensorFlow and PyTorch.",
     icon: "FaBrain"
   },
   {
     title: "Anomaly Detection",
-    description: "Identify unusual patterns using machine learning.",
+    description: "Develop systems to identify unusual patterns and potential network attacks.",
     icon: "FaSearch"
   },
   {
     title: "Explainable AI",
-    description: "Use SHAP and model explanations to understand predictions.",
+    description: "Use SHAP and model interpretation techniques to explain ML predictions.",
     icon: "FaLightbulb"
   },
   {
     title: "AI Applications",
-    description: "Build practical AI applications and deploy them.",
+    description: "Build practical AI/ML applications and turn models into usable solutions.",
     icon: "FaLaptopCode"
   }
 ];
