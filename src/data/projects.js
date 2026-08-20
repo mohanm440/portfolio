@@ -2,7 +2,7 @@ export const projects = [
   {
     id: "network-anomaly-detection",
     title: "Real-Time Explainable Hybrid Machine Learning Framework for Network Traffic Anomaly Detection",
-    description: "An advanced, real-time explainable hybrid machine learning framework engineered to safeguard networks by detecting anomalous traffic patterns with high precision. By synergizing an Autoencoder-based anomaly detector for unsupervised feature extraction with a robust XGBoost classifier, the system effectively identifies complex zero-day threats. Furthermore, the integration of SHAP (SHapley Additive exPlanations) ensures transparency by interpreting the underlying prediction factors, providing security analysts with actionable and trustworthy insights into network vulnerabilities.",
+    description: "Problem solved: Safeguarding networks against complex zero-day threats by detecting anomalous traffic patterns with high precision. Tools used: Python, Scikit-learn, TensorFlow, XGBoost, and SHAP to synergize an Autoencoder-based anomaly detector with a robust XGBoost classifier, providing explainable and trustworthy real-time intrusion detection.",
     year: "2025 - 2026",
     category: "Machine Learning",
     technologies: ["Python", "Pandas", "NumPy", "Scikit-learn", "TensorFlow", "XGBoost", "SHAP", "Scapy", "Streamlit"],
@@ -27,7 +27,7 @@ export const projects = [
   {
     id: "sales-analytics-forecasting",
     title: "AI-Powered Sales Analytics & Demand Forecasting Platform",
-    description: "A comprehensive, AI-powered sales analytics and demand forecasting platform built to transform raw e-commerce data into strategic business intelligence. The project encompasses an end-to-end machine learning pipeline, featuring rigorous data ingestion, advanced feature engineering, and the deployment of optimized supervised regression models. By accurately predicting future sales trends and evaluating performance through metrics like MAE and RMSE, the platform empowers stakeholders to optimize inventory management and make data-driven decisions via interactive dashboards.",
+    description: "Problem solved: Empowering businesses to optimize inventory management and make data-driven decisions by accurately predicting future e-commerce sales trends. Tools used: Python, Scikit-learn, Pandas, and Matplotlib to build an end-to-end machine learning pipeline, featuring rigorous data ingestion, advanced feature engineering, and supervised regression models.",
     year: "2026",
     category: "Data Analysis",
     technologies: ["Python", "Scikit-learn", "Pandas", "Matplotlib"],
@@ -49,7 +49,7 @@ export const projects = [
   {
     id: "customer-churn-prediction",
     title: "Customer Churn Prediction",
-    description: "A predictive analytics solution designed to combat customer attrition in the telecommunications sector by identifying at-risk users before they leave. Utilizing historical usage metrics, billing data, and demographic information, the machine learning classification model uncovers hidden patterns indicative of churn. Through comprehensive exploratory data analysis, targeted feature engineering, and predictive scoring, the model enables businesses to deploy proactive retention strategies, ultimately maximizing customer lifetime value and reducing revenue leakage.",
+    description: "Problem solved: Combating customer attrition in the telecommunications sector by identifying at-risk users before they leave, allowing businesses to deploy proactive retention strategies. Tools used: Python, Pandas, and Scikit-learn to analyze historical usage metrics, perform feature engineering, and train predictive machine learning classification models.",
     year: "2025",
     category: "Machine Learning",
     technologies: ["Python", "Pandas", "Scikit-learn", "Matplotlib", "Seaborn"],
@@ -69,7 +69,7 @@ export const projects = [
   {
     id: "house-price-predictor",
     title: "House Price Predictor",
-    description: "An intelligent real estate valuation tool that leverages advanced regression algorithms to accurately estimate property prices. By analyzing a multitude of features—including geographical location, square footage, and neighborhood amenities—the model captures the complex dynamics of the housing market. The end-to-end implementation features meticulous data preprocessing, hyperparameter tuning of models like XGBoost, and seamless deployment via a Flask API, offering a scalable solution for buyers, sellers, and real estate professionals.",
+    description: "Problem solved: Providing an intelligent real estate valuation tool for buyers and sellers to accurately estimate property prices based on features like location and square footage. Tools used: Python, Pandas, XGBoost, and Flask to handle meticulous data preprocessing, train advanced regression algorithms, and serve the model via a scalable API.",
     year: "2025",
     category: "Machine Learning",
     technologies: ["Python", "Scikit-learn", "Pandas", "XGBoost", "Flask"],
