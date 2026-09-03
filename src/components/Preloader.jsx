@@ -7,7 +7,7 @@ const Preloader = ({ onComplete }) => {
 
   useEffect(() => {
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Parisienne&family=Playfair+Display:ital@1&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 
@@ -24,9 +24,7 @@ const Preloader = ({ onComplete }) => {
       });
     }, 100);
 
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -38,8 +36,6 @@ const Preloader = ({ onComplete }) => {
       return () => clearTimeout(timer);
     }
   }, [showHello, onComplete]);
-
-  const helloLetters = "hello".split("");
 
   return (
     <motion.div
@@ -73,19 +69,27 @@ const Preloader = ({ onComplete }) => {
         ) : (
           <motion.div
             key="hello"
-            className="flex text-6xl md:text-8xl text-[#e5d3b3] pr-4"
-            style={{ fontFamily: "'Parisienne', cursive" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="flex items-center justify-center w-full"
           >
-            {helloLetters.map((letter, index) => (
-              <motion.span
-                key={index}
-                initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" }}
-                animate={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
-                transition={{ duration: 0.4, delay: index * 0.25, ease: "linear" }}
-              >
-                {letter}
-              </motion.span>
-            ))}
+            <svg
+              viewBox="0 0 200 120"
+              className="w-64 md:w-96"
+              fill="none"
+              stroke="#e5d3b3"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 1.8, ease: "easeInOut" }}
+                d="M 20 80 C 30 80, 40 20, 45 20 C 50 20, 45 70, 45 80 C 45 100, 60 100, 60 80 C 60 60, 50 60, 50 70 C 50 90, 65 90, 70 80 C 80 50, 90 20, 95 20 C 100 20, 90 80, 90 90 C 90 100, 100 100, 105 80 C 115 50, 125 20, 130 20 C 135 20, 125 80, 125 90 C 125 100, 135 100, 140 80 C 145 60, 165 60, 165 75 C 165 90, 145 90, 145 75 C 145 65, 160 65, 175 65"
+              />
+            </svg>
           </motion.div>
         )}
       </AnimatePresence>
