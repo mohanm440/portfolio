@@ -7,7 +7,7 @@ const Preloader = ({ onComplete }) => {
 
   useEffect(() => {
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital@1&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 
@@ -69,27 +69,13 @@ const Preloader = ({ onComplete }) => {
         ) : (
           <motion.div
             key="hello"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="flex items-center justify-center w-full"
+            initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" }}
+            animate={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="text-[120px] md:text-[180px] text-[#e5d3b3] pr-4 leading-none"
+            style={{ fontFamily: "'Great Vibes', cursive", paddingBottom: "20px" }}
           >
-            <svg
-              viewBox="0 0 220 140"
-              className="w-64 md:w-96"
-              fill="none"
-              stroke="#e5d3b3"
-              strokeWidth="6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <motion.path
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.8, ease: "easeInOut" }}
-                d="M 10,70 C 15,65 20,40 25,20 C 30,0 35,0 35,20 C 35,40 25,90 25,100 C 25,110 35,100 40,90 C 45,80 50,80 55,90 C 60,100 65,110 70,100 C 75,90 70,70 60,70 C 50,70 50,90 60,100 C 70,110 80,100 90,80 C 100,60 110,20 115,20 C 120,20 120,40 115,60 C 110,80 100,100 105,110 C 110,120 120,100 130,80 C 140,60 150,20 155,20 C 160,20 160,40 155,60 C 150,80 140,100 145,110 C 150,120 160,100 170,90 C 180,80 190,80 190,90 C 190,100 180,110 170,110 C 160,110 155,100 165,90 C 175,80 190,80 200,90"
-              />
-            </svg>
+            hello
           </motion.div>
         )}
       </AnimatePresence>
