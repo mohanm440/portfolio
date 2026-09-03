@@ -65,5 +65,25 @@ export const projects = [
     dataset: "Telco Customer Churn",
     architecture: "Classification Models",
     explainability: "Feature Importance"
+  },
+  {
+    id: "hybrid-product-recommendation-system",
+    title: "Hybrid Product Recommendation System",
+    description: "A machine learning system that combines multiple recommendation strategies to provide highly accurate and personalized product suggestions for users. Features a robust data training pipeline and a web API built with Flask.",
+    year: "2025",
+    category: "Machine Learning",
+    technologies: ["Python", "Pandas", "Scikit-learn", "Jupyter", "Flask"],
+    image: "/project_4.jpg",
+    githubUrl: "https://github.com/mohanm440/hybrid-product-recommendation-system",
+    liveUrl: "#TODO_ADD_URL",
+    features: [
+      "Data preprocessing & cleaning",
+      "Hybrid recommendation logic",
+      "Model training & evaluation",
+      "Web API via Flask"
+    ],
+    dataset: "Product Data",
+    architecture: "Recommendation Engine",
+    explainability: "N/A"
   }
 ];
