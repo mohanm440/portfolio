@@ -55,7 +55,7 @@ const Preloader = ({ onComplete }) => {
             className="flex flex-col items-center"
           >
             <div 
-              className="text-6xl md:text-8xl text-[#e5d3b3] mb-6 tracking-wider"
+              className="text-6xl md:text-8xl text-[#ffffff] mb-6 tracking-wider"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {progress > 100 ? 100 : progress}%
@@ -63,7 +63,7 @@ const Preloader = ({ onComplete }) => {
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-              className="w-16 h-16 rounded-full border-4 border-t-[#e5d3b3] border-r-transparent border-b-transparent border-l-transparent"
+              className="w-16 h-16 rounded-full border-4 border-t-[#ffffff] border-r-transparent border-b-transparent border-l-transparent"
             />
           </motion.div>
         ) : (
@@ -72,7 +72,7 @@ const Preloader = ({ onComplete }) => {
             initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" }}
             animate={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="text-[120px] md:text-[180px] text-[#e5d3b3] pr-4 leading-none"
+            className="text-[120px] md:text-[180px] text-[#ffffff] pr-4 leading-none"
             style={{ fontFamily: "'Great Vibes', cursive", paddingBottom: "20px" }}
           >
             hello
