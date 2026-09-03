@@ -71,11 +71,11 @@ const Preloader = ({ onComplete }) => {
         ) : (
           <motion.div
             key="hello"
-            initial={{ clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}
-            animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" }}
+            initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" }}
+            animate={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             style={{ fontFamily: "'Parisienne', cursive" }}
-            className="text-6xl md:text-8xl text-[#e5d3b3]"
+            className="text-6xl md:text-8xl text-[#e5d3b3] tracking-widest pl-4"
           >
             hello
           </motion.div>
