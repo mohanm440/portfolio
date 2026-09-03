@@ -65,25 +65,5 @@ export const projects = [
     dataset: "Telco Customer Churn",
     architecture: "Classification Models",
     explainability: "Feature Importance"
-  },
-  {
-    id: "house-price-predictor",
-    title: "House Price Predictor",
-    description: "Problem solved: Providing an intelligent real estate valuation tool for buyers and sellers to accurately estimate property prices based on features like location and square footage. Tools used: Python, Pandas, XGBoost, and Flask to handle meticulous data preprocessing, train advanced regression algorithms, and serve the model via a scalable API.",
-    year: "2025",
-    category: "Machine Learning",
-    technologies: ["Python", "Scikit-learn", "Pandas", "XGBoost", "Flask"],
-    image: "/project_4.jpg",
-    githubUrl: "https://github.com/mohanm440/house-price-predictor",
-    liveUrl: "#TODO_ADD_URL",
-    features: [
-      "Data cleaning & preprocessing",
-      "Regression modeling",
-      "Hyperparameter tuning",
-      "Flask API integration"
-    ],
-    dataset: "Real Estate Data",
-    architecture: "Regression Models",
-    explainability: "N/A"
   }
 ];
