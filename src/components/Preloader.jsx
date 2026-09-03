@@ -34,10 +34,12 @@ const Preloader = ({ onComplete }) => {
       const timer = setTimeout(() => {
         onComplete();
         document.body.style.overflow = 'unset';
-      }, 2000);
+      }, 2500);
       return () => clearTimeout(timer);
     }
   }, [showHello, onComplete]);
+
+  const helloLetters = "hello".split("");
 
   return (
     <motion.div
@@ -71,13 +73,19 @@ const Preloader = ({ onComplete }) => {
         ) : (
           <motion.div
             key="hello"
-            initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" }}
-            animate={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="flex text-6xl md:text-8xl text-[#e5d3b3] pr-4"
             style={{ fontFamily: "'Parisienne', cursive" }}
-            className="text-6xl md:text-8xl text-[#e5d3b3] tracking-widest pl-4"
           >
-            hello
+            {helloLetters.map((letter, index) => (
+              <motion.span
+                key={index}
+                initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" }}
+                animate={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
+                transition={{ duration: 0.4, delay: index * 0.25, ease: "linear" }}
+              >
+                {letter}
+              </motion.span>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
