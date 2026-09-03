@@ -32,7 +32,7 @@ const Preloader = ({ onComplete }) => {
         initial={{ clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}
         animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" }}
         transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
-        style={{ fontFamily: \"'Parisienne', cursive\" }}
+        style={{ fontFamily: "'Parisienne', cursive" }}
         className="text-6xl md:text-8xl text-[#e5d3b3]"
       >
         hello
