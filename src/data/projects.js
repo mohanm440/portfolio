@@ -73,7 +73,7 @@ export const projects = [
     year: "2025",
     category: "Machine Learning",
     technologies: ["Python", "Pandas", "Scikit-learn", "Jupyter", "Flask"],
-    image: "/project_4.jpg",
+    image: "/product_recommendation.jpg",
     githubUrl: "https://github.com/mohanm440/hybrid-product-recommendation-system",
     liveUrl: "#TODO_ADD_URL",
     features: [
