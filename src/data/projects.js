@@ -6,7 +6,7 @@ export const projects = [
     year: "2025 - 2026",
     category: "Machine Learning",
     technologies: ["Python", "Pandas", "NumPy", "Scikit-learn", "TensorFlow", "XGBoost", "SHAP", "Scapy", "Streamlit"],
-    image: "/project_1.png",
+    image: "/network_anomaly_v2.jpg",
     githubUrl: "https://github.com/mohanm440",
     liveUrl: "#TODO_ADD_URL",
     features: [
@@ -31,7 +31,7 @@ export const projects = [
     year: "2026",
     category: "Data Analysis",
     technologies: ["Python", "Scikit-learn", "Pandas", "Matplotlib"],
-    image: "/project_2.png",
+    image: "/sales_forecasting_v2.jpg",
     githubUrl: "https://github.com/mohanm440",
     liveUrl: "#TODO_ADD_URL",
     features: [
@@ -53,7 +53,7 @@ export const projects = [
     year: "2025",
     category: "Machine Learning",
     technologies: ["Python", "Pandas", "Scikit-learn", "Matplotlib", "Seaborn"],
-    image: "/project_3.jpg",
+    image: "/customer_churn_v2.jpg",
     githubUrl: "https://github.com/mohanm440/Customer-Churn-Prediction",
     liveUrl: "#TODO_ADD_URL",
     features: [
