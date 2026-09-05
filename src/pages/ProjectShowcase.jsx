@@ -19,7 +19,7 @@ const ProjectShowcase = () => {
       <div className="min-h-screen flex items-center justify-center pt-20 bg-gray-50">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Project Not Found</h2>
-          <a href="/#projects" className="text-purple-600 hover:underline font-medium">Return to Projects</a>
+          <Link to="/#projects" className="text-purple-600 hover:underline font-medium">Return to Projects</Link>
         </div>
       </div>
     );
@@ -27,9 +27,9 @@ const ProjectShowcase = () => {
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto bg-white">
-      <a href="/#projects" className="inline-flex items-center text-purple-600 hover:text-purple-800 transition-colors mb-8 font-medium">
+      <Link to="/#projects" className="inline-flex items-center text-purple-600 hover:text-purple-800 transition-colors mb-8 font-medium">
         <FiArrowLeft className="mr-2" /> Back to Projects
-      </a>
+      </Link>
       
       <motion.div 
         initial={{ opacity: 0, y: 20 }}

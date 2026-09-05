@@ -9,7 +9,10 @@ import CustomCursor from './components/CustomCursor';
 import Preloader from './components/Preloader';
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    const hasLoaded = sessionStorage.getItem('preloader_shown');
+    return !hasLoaded;
+  });
   const [theme, setTheme] = useState('dark');
 
   const toggleTheme = () => {
@@ -24,10 +27,15 @@ function App() {
     }
   }, [theme]);
 
+  const handlePreloaderComplete = () => {
+    setLoading(false);
+    sessionStorage.setItem('preloader_shown', 'true');
+  };
+
   return (
     <Router>
       <AnimatePresence>
-        {loading && <Preloader key="preloader" onComplete={() => setLoading(false)} />}
+        {loading && <Preloader key="preloader" onComplete={handlePreloaderComplete} />}
       </AnimatePresence>
       <div className="min-h-screen flex flex-col selection:bg-purple-200 selection:text-purple-900 cursor-none bg-white dark:bg-[#121212] transition-colors duration-500">
         <CustomCursor theme={theme} />
