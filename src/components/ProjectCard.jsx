@@ -74,7 +74,7 @@ const ProjectCard = ({ project, index }) => {
               rel="noopener noreferrer"
               className="py-3 px-6 border border-gray-200 dark:border-white/20 text-gray-800 dark:text-gray-200 rounded-xl flex items-center justify-center hover:bg-gray-50 dark:hover:bg-white/5 hover:border-gray-300 dark:hover:border-white/30 font-semibold transition-all hover:-translate-y-1"
             >
-              <FiGithub className="mr-2" size={20} /> View Source
+              <FiGithub className="mr-2" size={20} /> View Github
             </a>
             {project.liveUrl && project.liveUrl !== "#TODO_ADD_URL" && (
               <a 
